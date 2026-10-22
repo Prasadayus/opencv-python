@@ -198,7 +198,9 @@ def main():
              # Emulated cmake requires following flags to correctly detect
              # target architecture for windows/arm64 build
              "-DOPENCV_WORKAROUND_CMAKE_20989=ON",
-             "-DCMAKE_SYSTEM_PROCESSOR=ARM64"]
+             "-DCMAKE_SYSTEM_PROCESSOR=ARM64",
+             # No OpenCL drivers for Windows ARM64 yet
+             "-DWITH_OPENCL=OFF"]
             if platform.machine() == "ARM64" and sys.platform == "win32"
             # If it is not defined 'linker flags: /machine:X86' on Windows x64
             else ["-DCMAKE_GENERATOR_PLATFORM=x64"] if is64 and sys.platform == "win32"
