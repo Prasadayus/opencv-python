@@ -159,9 +159,9 @@ def main():
     # HACK: Disabled generic assembler for now.
     # Windows 2025 CI environment does not provide suitable assembler or build is broken in OpenCV MLAS.
     ci_cmake_generator = (
-        # Windows ARM64: real official release build already proves VS2022 builds MLAS's NEON
-        # assembly kernels fine natively, no need to disable the assembler here
-        ["-G", "Visual Studio 17 2022"]
+        # Windows ARM64: Runner includes only preinstalled VS2026 tools
+        ["-G", "Visual Studio 18 2026",
+         "-DCMAKE_ASM_COMPILER="]
         if os.name == "nt" and platform.machine() == "ARM64"
         else ["-G", "Visual Studio 17 2022",
               "-DCMAKE_ASM_COMPILER="]
