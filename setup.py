@@ -156,11 +156,14 @@ def main():
     # Raw paths relative to sourcetree root.
     files_outside_package_dir = {"cv2": ["LICENSE.txt", "LICENSE-3RD-PARTY.txt"]}
 
-    # HACK: Disabled generic assembler for x86/x64 for now.
+    # HACK: Disabled generic assembler for now.
     # Windows 2025 CI environment does not provide suitable assembler or build is broken in OpenCV MLAS.
+    # On ARM64, this also avoids a MinGW toolchain on PATH being picked up during
+    # CMake's ASM auto-detection, which leaks GCC-style '-l' link flags into MSVC builds.
     ci_cmake_generator = (
         # Windows ARM64: Runner includes only preinstalled VS2026 tools
-        ["-G", "Visual Studio 18 2026"]
+        ["-G", "Visual Studio 18 2026",
+         "-DCMAKE_ASM_COMPILER=CMAKE_ASM_COMPILER-NOTFOUND"]
         if os.name == "nt" and platform.machine() == "ARM64"
         else ["-G", "Visual Studio 17 2022",
               "-DCMAKE_ASM_COMPILER="]
